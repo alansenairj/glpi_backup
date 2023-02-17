@@ -4,22 +4,22 @@
 
 Script que cria e gera backup full e lite do glpi
 
-# copiar arquivos
+### copiar arquivos
 copiar para /usr/local/bin
 chmod +x backup_glpi2.sh
 
-# checando as tabelas
+### checando as tabelas
 mysql -uroot -p glpidb
 SHOW TABLES;
 
 
-# Testando backup do banco
+### Testando backup do banco
 mysqldump -u root glpidb > backup.sql
 
-# Instalando dependências debian
+### Instalando dependências debian
 apt install zip multitail
 
-# Agendando a tarefa de backup no cron
+### Agendando a tarefa de backup no cron
 crontab -e
 ```
 
@@ -46,10 +46,10 @@ crontab -e
 
 
 
-# Exemplo do arquivo de log gerado.
+### Exemplo do arquivo de log gerado.
 /var/log/backupglpi/lite-05-10-2018_10-30.log
 
-# Conferindo logs de backup
+### Conferindo logs de backup
 multitail  -n 300 /var/log/backupglpi/2018-10-05_23-00-full.log
 
 
@@ -57,31 +57,29 @@ multitail  -n 300 /var/log/backupglpi/2018-10-05_23-00-full.log
 cd /var/backups/glpi/
 stat -c %n *
 
-# Lendo os arquivos zipados antes de o descompactarmos.
+### Lendo os arquivos zipados antes de o descompactarmos.
 unzip -l  2018-10-06_07-30-bkpglpi-lite.zip | grep .sql
 
 
-# Descompactando apenas o backup do banco de dados
+### Descompactando apenas o backup do banco de dados
 cd /var/backups/glpi
  unzip 2018-10-05_23-00-bkpglpi-full.zip  files/_dumps/2018-10-05_23-00.sql -d  /var/www/html/glpi/
 
-# Uma vez extraído o aquivos podemos restaurar a base usando a seguinte sintaxe. mysql -u root -p base < base.sql
+### Uma vez extraído o aquivos podemos restaurar a base usando a seguinte sintaxe. mysql -u root -p base < base.sql
  mysql  -u root  -p glpi < /var/www/html/glpi/files/_dumps/2018-10-06_07-30.sql
 
 
-# Restauração completa do diretório
+### Restauração completa do diretório
  unzip  /var/backups/glpi/2018-10-05_23-00-bkpglpi-full.zip -d /var/www/html/glpi/ 
 
-# Definir o grupo e usuário do diretório glpi
+### Definir o grupo e usuário do diretório glpi
 chown  www-data.www-data -Rf /var/www/html/glpi/
 
-# restaurar o base de dados
+### restaurar o base de dados
 mysql  -u root  -p glpi < /var/www/html/glpi/files/_dumps/2018-10-05_23-00.sql
 
 
-
-
-# se precisar restaurar do zero tem que criar uma nova base
+### se precisar restaurar do zero tem que criar uma nova base
 mysql -u root -e "create database glpi";
 
 
@@ -90,7 +88,7 @@ mysql -u root -e "create database glpi";
 root@glpi:/backup# mysqldump -u root glpidb > backup.sql
 mysqldump: Got error: 1932: "Table 'glpidb.glpi_notimportedemails' doesn't exist in engine" when using LOCK TABLES
 
-#recriar tabela
+### recriar tabela
 
 ```
 
